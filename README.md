@@ -48,6 +48,28 @@ loadStyles('body { background: "[theme:primaryBackgroundColor, default: #FFAAFA]
 
 This will register #EAEAEA as the body's background color. If you call loadTheme again after styles have already been registered, it will replace the style elements with retokenized values.
 
+
+### Server Side Rendering or Universal Javascript Applications ###
+
+On the server, the built-in style loader needs to be overridden so that it does not attempt to access the
+DOM. Call the function ```configureLoadStyles``` function to provide a callback so that the themed
+styles can be stuffed inside a ```<style>``` tag: 
+
+```js
+import { configureLoadStyles, loadStyles, loadTheme } from 'load-themed-styles';
+
+configureLoadStyles(function(styles) {
+  // ... some code to inject the styles into the <style> tag
+});
+
+loadTheme({
+  primaryBackgroundColor: "#EAEAEA"
+});
+
+// The configured load styles callback is triggered here
+loadStyles('body { background: "[theme:primaryBackgroundColor, default: #FFAAFA]"');
+```
+
 ## License
 
 MIT © [David Zearing](http://github.com/dzearing)
